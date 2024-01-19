@@ -16,11 +16,8 @@ services:
       - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
       - ${SSL_DIR-./config/ssl}:/etc/apache2/ssl/
       - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
-      - ${LOG_DIR-./logs/apache2}:/var/log/apache2
-      - ${XDEBUG_LOG_DIR-./logs/xdebug}:/var/log/xdebug
     environment:
       APACHE_DOCUMENT_ROOT: ${APACHE_DOCUMENT_ROOT-/var/www/html}
-      PMA_PORT: ${HOST_MACHINE_PMA_PORT}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -39,9 +36,5 @@ services:
     volumes:
       - ${MYSQL_INITDB_DIR-./config/initdb}:/docker-entrypoint-initdb.d
       - ${MYSQL_DATA_DIR-./data/mysql}:/var/lib/mysql
-      - ${MYSQL_LOG_DIR-./logs/mysql}:/var/log/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
