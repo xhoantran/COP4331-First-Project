@@ -1,3 +1,0 @@
-<!-- MySQL Database configuration -->
-<?php
-
