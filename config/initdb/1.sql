@@ -2,8 +2,6 @@
 
 -- Create the database and user for the application
 CREATE DATABASE IF NOT EXISTS contact_manager;
-CREATE USER IF NOT EXISTS 'contact_manager'@'localhost' IDENTIFIED BY 'contact_manager';
-GRANT ALL PRIVILEGES ON contact_manager.* TO 'contact_manager'@'localhost';
 
 -- Create the tables for the application
 USE contact_manager;
