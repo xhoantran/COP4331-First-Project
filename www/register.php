@@ -22,6 +22,7 @@ try{
 }catch(PDOException $e){
     http_response_code(500);
     echo json_encode(array('message' => 'Unable to connect to MySQL. Error:\n $e'));
+    exit();
 }
 
 $data = json_decode(file_get_contents("php://input"));
@@ -32,7 +33,7 @@ if(empty($data->username) || empty($data->password) || empty($data->fname) || em
 }
 
 // Check if the username is already taken
-$query = $db->prepare("SELECT * FROM users WHERE username = ?");
+$query = $pdo->prepare("SELECT * FROM users WHERE username = ?");
 $query->execute([$data->username]);
 
 if ($query->rowCount() > 0) {
@@ -41,11 +42,11 @@ if ($query->rowCount() > 0) {
     exit();
 }
 
-$stmt = $pdo->prepare("INSERT into Users (FirstName, LastName, Login, Password) VALUES(?,?,?,?)");
-$stmt->bind_param("ssss", $data->username, $data->password, $data->fname, $data->lname);
-$stmt->execute();
-$stmt->close();
+$stmt = $pdo->prepare("INSERT INTO users (username, password, name) VALUES(?,?,?)");
+$stmt->execute([$data->username, $data->password, $data->fname . " " . $data->lname]);
 http_response_code(201);
 echo json_encode(["message" => "User registered successfully"]);
 
 $pdo = null;
+
+?>
