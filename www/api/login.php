@@ -37,7 +37,7 @@ try{
     if (count($result) > 0) {
         // HTTP response code 200
         http_response_code(200);
-        returnWithInfo($result[0]['name'], $result[0]['id']);
+        echo json_encode(array('id' => $result[0]['id'], 'name' => $result[0]['name']));
     } else {
         // HTTP response code 401
         http_response_code(401);
