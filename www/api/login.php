@@ -33,11 +33,11 @@ try{
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // If username and password are correct, return the user's id json encoded
+    // If username and password are correct, return the user's id and name, json encoded
     if (count($result) > 0) {
         // HTTP response code 200
         http_response_code(200);
-        echo json_encode(array('id' => $result[0]['id']));
+        returnWithInfo($result[0]['name'], $result[0]['id']);
     } else {
         // HTTP response code 401
         http_response_code(401);
@@ -48,6 +48,12 @@ try{
     // HTTP response code 500
     http_response_code(500);
     echo json_encode(array('message' => 'Unable to connect to MySQL. Error:\n $e'));
+}
+
+function returnWithInfo($name, $id )
+{
+	$retValue = '{"id":' . $id . ',"Name":"' . $name . '","error":""}';
+	echo $retValue;
 }
 
 $pdo = null;

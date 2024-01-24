@@ -26,25 +26,19 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-if(empty($data->username) || empty($data->password) || empty($data->fname) || empty($data->lname)){
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid input"]);
-    exit();
+$searchResults = "";
+$searchCount = 0;
+$stmt = $pdo->prepare("SELECT * FROM Users WHERE username = ?");
+$stmt->execute([$data->username]);
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    $searchCount++;
 }
-
-// Check if the username is already taken
-$query = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-$query->execute([$data->username]);
-
-if ($query->rowCount() > 0) {
-    http_response_code(409);
-    echo json_encode(["error" => "Username is already taken!"]);
-    exit();
+if($searchCount == 0){
+    $retValue = '{"Error": "' . '"}';
+    echo $retValue;
+}else{
+    $retValue = '{"Error": "' . 'Username has been taken' . '"}';
+    echo $retValue;
 }
-
-$stmt = $pdo->prepare("INSERT INTO users (username, password, name) VALUES(?,?,?)");
-$stmt->execute([$data->username, $data->password, $data->fname . " " . $data->lname]);
-http_response_code(201);
-echo json_encode(["message" => "User registered successfully"]);
 
 $pdo = null;
