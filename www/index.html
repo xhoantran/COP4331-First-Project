@@ -4,6 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign in to your account</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        const user = localStorage.getItem("user");
+        if (user) {
+          window.location.href = "/dashboard.html";
+        }
+      });
+    </script>
   </head>
   <body>
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
