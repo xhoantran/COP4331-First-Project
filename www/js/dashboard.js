@@ -1,4 +1,13 @@
-window.onload = function () {
+window.onload = async function () {
+  if (localStorage.getItem("user") === null) {
+    window.location.href = "index.html";
+  }
+  const user = JSON.parse(localStorage.getItem("user"));
+  document.getElementById("name").innerHTML = user.name;
+
+  // Clean search query
+  window.history.replaceState({}, "", `?search=`);
+
   getContacts()
     .then((contacts) => displayContacts(contacts))
     .catch((e) => {
@@ -13,6 +22,13 @@ window.onload = function () {
         className: "bg-none bg-red-500",
       }).showToast();
     });
+
+  // Bind event listeners
+  const search = document.getElementById("search");
+  search.addEventListener("input", () => {
+    window.history.replaceState({}, "", `?search=${search.value}`);
+    debounce(refreshContacts, 500)();
+  });
 }
 
 function detectRowInView(ref, callback) {
@@ -56,7 +72,9 @@ function spinner() {
 
 function removeSpinner() {
   let spinner = document.getElementById("spinner-row");
-  spinner.remove();
+  if (spinner) {
+    spinner.remove();
+  }
 }
 
 
@@ -286,16 +304,20 @@ function displayContacts(contacts, page = 1) {
     
 }
 
-async function getContacts(page = 1) {
+async function getContacts(query, page = 1) {
   // Get user id from local storage
   let user = JSON.parse(localStorage.getItem("user"));
 
-  const res = await fetch(`http://localhost/api/getcontacts.php?user_id=${user.id}&page=${page}`);
+  const res = await fetch(`http://localhost/api/getcontacts.php?user_id=${user.id}&page=${page}&search=${query ?? ""}`);
   return res.json();
 }
 
 async function getPage(page) {
-  return getContacts(page)
+  // Get search query
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get("search");
+
+  return getContacts(query, page)
     .then((contacts) => displayContacts(contacts, page))
     .catch(() => {
       Toastify({
@@ -456,7 +478,7 @@ function editContactSubmit(id) {
     });
 }
 
-// -------------------DELETE------------------
+// -------------------DELETE-------------------
 function showDeleteModal(id, name) {
   // Get delete-modal
   let deleteModal = document.getElementById("delete-contact-modal");
@@ -512,4 +534,13 @@ function deleteContact() {
         className: "bg-none bg-red-500",
       }).showToast();
     });
+}
+
+// -------------------SEARCH-------------------
+let debounceTrail = null;
+function debounce(fn, delay) {
+  return function () {
+    clearTimeout(debounceTrail);
+    debounceTrail = setTimeout(() => fn.apply(this, arguments), delay);
+  };
 }
