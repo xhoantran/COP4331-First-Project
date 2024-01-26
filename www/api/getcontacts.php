@@ -2,8 +2,8 @@
 
 header('Content-type: application/json');
 
-// Make sure request is a DELETE request
-if ($_SERVER['REQUEST_METHOD'] != 'DELETE') {
+// Make sure request is a GET request
+if ($_SERVER['REQUEST_METHOD'] != 'GET') {
     // HTTP response code 405
     http_response_code(405);
     echo json_encode(array('message' => 'Invalid request method'));
@@ -25,15 +25,22 @@ try{
     exit();
 }
 
-$data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("DELETE FROM Contacts WHERE id = ?");
-$stmt->execute([$data->id]);
-if ($stmt->rowCount() > 0) {
-    http_response_code(201);
-    echo json_encode(["message" => "Contact successfully Deleted!"]);
+$page = 1;
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}
+$offset = ($page - 1) * 20;
+
+// Order by last_updated so that the most recently updated contacts are shown first
+$stmt = $pdo->prepare("SELECT * FROM Contacts WHERE user_id = ? ORDER BY last_updated DESC LIMIT 20 OFFSET $offset");
+if($stmt->execute([$_GET['user_id']])){
+    $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    http_response_code(200);
+    echo json_encode($contacts);
 }else{
     http_response_code(401);
-    echo json_encode(array("message"=> "Failed to Delete Contact"));
+    echo json_encode(array("message"=> "Failed to get Contacts"));
 }
+
 
 $pdo = null;

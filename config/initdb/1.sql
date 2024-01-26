@@ -19,8 +19,10 @@ CREATE TABLE contacts (
   `phone` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
   `user_id` INT NULL,
+  `last_updated` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_contacts_users_idx` (`user_id` ASC),
+  INDEX `fk_contacts_users_idx_last_updated` (`user_id` ASC, `last_updated` ASC),
   CONSTRAINT `fk_contacts_users`
     FOREIGN KEY (`user_id`)
     REFERENCES `users` (`id`)
