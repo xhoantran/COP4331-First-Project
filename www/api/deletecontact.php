@@ -26,7 +26,7 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("DELETE FROM Contacts WHERE id = ?");
+$stmt = $pdo->prepare("DELETE FROM contacts WHERE id = ?");
 $stmt->execute([$data->id]);
 if ($stmt->rowCount() > 0) {
     http_response_code(201);

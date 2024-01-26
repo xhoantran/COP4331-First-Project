@@ -26,7 +26,7 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("UPDATE Contacts SET name = ?, phone = ?, email = ? WHERE id = ?");
+$stmt = $pdo->prepare("UPDATE contacts SET name = ?, phone = ?, email = ? WHERE id = ?");
 if($stmt->execute([$data->name, $data->phone, $data->email, $data->id])){
     http_response_code(200);
     echo json_encode(["message" => "Contact updated successfully"]);
