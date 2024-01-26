@@ -28,7 +28,7 @@ try{
 $data = json_decode(file_get_contents("php://input"));
 $searchResults = "";
 $searchCount = 0;
-$stmt = $pdo->prepare("SELECT * FROM Users WHERE username = ?");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
 $stmt->execute([$data->username]);
 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
     $searchCount++;

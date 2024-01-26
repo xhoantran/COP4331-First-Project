@@ -28,7 +28,7 @@ try{
 $data = json_decode(file_get_contents("php://input"));
 $searchResults = "";
 $searchCount = 0;
-$stmt = $pdo->prepare("SELECT * FROM Contacts WHERE name like ? AND user_id = ?");
+$stmt = $pdo->prepare("SELECT * FROM contacts WHERE name like ? AND user_id = ?");
 $colorName = "%" . $data->search . "%";
 $stmt->execute([$colorName, $data->user_id]);
 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
