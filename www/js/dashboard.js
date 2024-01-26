@@ -172,7 +172,7 @@ function createContactSubmit() {
   };
 
   // Send contact to server
-  fetch("http://localhost/api/addcontact.php", {
+  fetch("/api/addcontact.php", {
     method: "POST",
     body: JSON.stringify(contact),
   })
@@ -308,7 +308,7 @@ async function getContacts(query, page = 1) {
   // Get user id from local storage
   let user = JSON.parse(localStorage.getItem("user"));
 
-  const res = await fetch(`http://localhost/api/getcontacts.php?user_id=${user.id}&page=${page}&search=${query ?? ""}`);
+  const res = await fetch(`/api/getcontacts.php?user_id=${user.id}&page=${page}&search=${query ?? ""}`);
   return res.json();
 }
 
@@ -448,7 +448,7 @@ function editContactSubmit(id) {
   };
 
   // Send contact to server
-  fetch("http://localhost/api/updatecontact.php", {
+  fetch("/api/updatecontact.php", {
     method: "PUT",
     body: JSON.stringify(contact),
   })
@@ -506,7 +506,7 @@ function deleteContact() {
   let id = document.getElementById("delete-contact-id");
 
   // Send with delete method
-  fetch(`http://localhost/api/deletecontact.php`, {
+  fetch(`/api/deletecontact.php`, {
     method: "DELETE",
     body: JSON.stringify({ id: id.value }),
   })
