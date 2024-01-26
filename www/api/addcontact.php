@@ -26,10 +26,11 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("INSERT INTO Contacts (name , phone, email, user_id) VALUES(?,?,?,?)");
-if($stmt->execute([$data->fname . " " . $data->lname, $data->phone, $data->email, $data->user_id])){
+$stmt = $pdo->prepare("INSERT INTO contacts (name , phone, email, user_id) VALUES(?,?,?,?)");
+if($stmt->execute([$data->name, $data->phone, $data->email, $data->user_id])){
     http_response_code(201);
-    echo json_encode(["message" => "Contact Added successfully"]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo json_encode(["message" => "Contact added successfully", "id" => $pdo->lastInsertId()]);
 }else{
     http_response_code(401);
     echo json_encode(array("message"=> "Failed to Add Contact"));

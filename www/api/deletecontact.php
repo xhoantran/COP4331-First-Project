@@ -2,8 +2,8 @@
 
 header('Content-type: application/json');
 
-// Make sure request is a POST request
-if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+// Make sure request is a DELETE request
+if ($_SERVER['REQUEST_METHOD'] != 'DELETE') {
     // HTTP response code 405
     http_response_code(405);
     echo json_encode(array('message' => 'Invalid request method'));
@@ -26,8 +26,9 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("DELETE FROM Contacts WHERE name = ? AND user_id = ?");
-if($stmt->execute([$data->fname . " " . $data->lname, $data->user_id])){
+$stmt = $pdo->prepare("DELETE FROM contacts WHERE id = ?");
+$stmt->execute([$data->id]);
+if ($stmt->rowCount() > 0) {
     http_response_code(201);
     echo json_encode(["message" => "Contact successfully Deleted!"]);
 }else{
