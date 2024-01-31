@@ -26,7 +26,7 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("INSERT INTO Contacts (name , phone, email, user_id) VALUES(?,?,?,?)");
+$stmt = $pdo->prepare("INSERT INTO contacts (name , phone, email, user_id) VALUES(?,?,?,?)");
 if($stmt->execute([$data->name, $data->phone, $data->email, $data->user_id])){
     http_response_code(201);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);

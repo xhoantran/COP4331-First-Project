@@ -2,8 +2,8 @@
 
 header('Content-type: application/json');
 
-// Make sure request is a PUT request
-if ($_SERVER['REQUEST_METHOD'] != 'PUT') {
+// Make sure request is a POST request
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     // HTTP response code 405
     http_response_code(405);
     echo json_encode(array('message' => 'Invalid request method'));
@@ -26,13 +26,19 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-$stmt = $pdo->prepare("UPDATE contacts SET name = ?, phone = ?, email = ? WHERE id = ?");
-if($stmt->execute([$data->name, $data->phone, $data->email, $data->id])){
-    http_response_code(200);
-    echo json_encode(["message" => "Contact updated successfully"]);
+$searchResults = "";
+$searchCount = 0;
+$stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+$stmt->execute([$data->username]);
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    $searchCount++;
+}
+if($searchCount == 0){
+    $retValue = '{"Error": "' . '"}';
+    echo $retValue;
 }else{
-    http_response_code(401);
-    echo json_encode(array("message"=> "Failed to Update Contact!"));
+    $retValue = '{"Error": "' . 'Username has been taken' . '"}';
+    echo $retValue;
 }
 
 $pdo = null;

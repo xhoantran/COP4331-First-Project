@@ -31,9 +31,13 @@ if(isset($_GET['page'])){
 }
 $offset = ($page - 1) * 20;
 
-// Order by last_updated so that the most recently updated contacts are shown first
-$stmt = $pdo->prepare("SELECT * FROM Contacts WHERE user_id = ? ORDER BY last_updated DESC LIMIT 20 OFFSET $offset");
-if($stmt->execute([$_GET['user_id']])){
+$search = '%';
+if(isset($_GET['search'])){
+    $search = '%' . $_GET['search'] . '%';
+}
+
+$stmt = $pdo->prepare("SELECT * FROM contacts WHERE user_id = ? AND name LIKE ? ORDER BY last_updated DESC LIMIT 20 OFFSET $offset");
+if($stmt->execute([$_GET['user_id'], $search])){
     $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     http_response_code(200);
     echo json_encode($contacts);
