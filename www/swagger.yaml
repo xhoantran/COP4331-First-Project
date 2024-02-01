@@ -1,0 +1,289 @@
+swagger: '2.0'
+info:
+  description: This is a simple API for Contact Manager
+  version: 1.0.0
+  title: Simple Inventory API for Contact Manager
+  # put the contact info for your development or API team
+  contact:
+    email: ja142580@ucf.edu
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+paths:
+  /login.php:
+    post:
+      tags:
+      - Users
+      summary: logins the user into the Contact Manager
+      operationId: login
+      description: login into the Contact Manager
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: login
+        description: login
+        schema:
+          $ref: '#/definitions/login'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+  /register.php:
+    post:
+      tags:
+      - Users
+      summary: register the User provided into the Contact Manager
+      operationId: register
+      description: register into the Contact Manager
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: register
+        description: register
+        schema:
+          $ref: '#/definitions/register'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+  /addcontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: adds a contact to the user's contact list
+      operationId: addcontact
+      description: adds a contact to the user's contact list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: addcontacts
+        description: adds contact
+        schema:
+          $ref: '#/definitions/addcontacts'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+  /updatecontact.php:
+    put:
+      tags:
+      - Contacts
+      summary: updates a contact
+      operationId: updatecontacts
+      description: updates a contact in the contact list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: updatecontact
+        description: updates contact
+        schema:
+          $ref: '#/definitions/updatecontact'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+  /searchcontact.php:
+    post:
+      tags:
+      - Contacts
+      summary: searches contacts
+      operationId: searchcontact
+      description: searches in the contacts list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: searchcontact
+        description: searches contacts
+        schema:
+          $ref: "#/definitions/searchcontact"
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+  /deletecontact.php:
+    delete:
+      tags:
+      - Contacts
+      summary: delete contact
+      operationId: deletecontact
+      description: deletes in the contacts list
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: deletecontact
+        description: deletes contacts
+        schema:
+          $ref: '#/definitions/deletecontact'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+  /searchuser.php:
+    post:
+      tags:
+      - Users
+      summary: search user
+      operationId: searchuser
+      description: searches the user for specified username
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: searchuser
+        description: searches for specified username
+        schema:
+          $ref: '#/definitions/searchuser'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+        
+definitions:
+  login:
+    type: object
+    required:
+    - username
+    - password
+    properties:
+      username:
+        type: string
+        example: "Hello"
+      password:
+        type: string
+        example: "welcome123"
+  register:
+    type: object
+    required:
+    - username
+    - password
+    - fname
+    - lname
+    properties:
+      username:
+        type: string
+        example: "Hello"
+      password:
+        type: string
+        example: "welcome123"
+      fname:
+        type: string
+        example: "Robot"
+      lname:
+        type: string
+        example: "Doe"
+  addcontacts:
+    type: object
+    required:
+    - name
+    - phone
+    - email
+    - user_id
+    properties:
+      name:
+        type: string
+        example: "Leinecker"
+      phone:
+        type: string
+        example: "911"
+      email:
+        type: string
+        example: "IloveCOP4331@gmail.com"
+      user_id:
+        type: integer
+        example: 1
+  updatecontact:
+    type: object
+    required:
+    - name
+    - phone
+    - email
+    - id
+    properties:
+      name:
+        type: string
+        example: "Leinecker"
+      phone:
+        type: string
+        example: "911"
+      email:
+        type: string
+        example: "IloveCOP4331@gmail.com"
+      id:
+        type: integer
+        example: 1
+  searchcontact:
+    type: object
+    required:
+    - search
+    - user_id
+    properties:
+      search:
+        type: string
+        example: "jo"
+      user_id:
+        type: integer
+        example: 1
+  deletecontact:
+    type: object
+    required:
+    - id
+    properties:
+      id:
+        type: integer
+        example: 28
+  searchuser:
+    type: object
+    required:
+    - username
+    properties:
+      username:
+        type: string
+        example: "john"
+
+schemes:
+ - http
+host: cop4331.xhoantran.com
+basePath: /api
