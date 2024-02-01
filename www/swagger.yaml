@@ -1,0 +1,103 @@
+swagger: "2.0"
+info:
+  description: This is a simple API for Contact Manager
+  version: 1.0.0
+  title: Simple Inventory API for Contact Manager
+  # put the contact info for your development or API team
+  contact:
+    email: ja142580@ucf.edu
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+paths:
+  /login.php:
+    post:
+      tags:
+        - Users
+      summary: logins the user into the Contact Manager
+      operationId: login
+      description: login into the Contact Manager
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: login
+          description: login
+          schema:
+            $ref: "#/definitions/login"
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+
+  /register.php:
+    post:
+      tags:
+        - Users
+      summary: register the User provided into the Contact Manager
+      operationId: register
+      description: register into the Contact Manager
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: register
+          description: register
+          schema:
+            $ref: "#/definitions/register"
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL Not Found
+        500:
+          description: Server Error
+
+definitions:
+  login:
+    type: object
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+        example: "john"
+      password:
+        type: string
+        example: "john"
+  register:
+    type: object
+    required:
+      - username
+      - password
+      - fname
+      - lname
+    properties:
+      username:
+        type: string
+        example: "user123"
+      password:
+        type: string
+        example: "welcome123"
+      fname:
+        type: string
+        example: "Robot"
+      lname:
+        type: string
+        example: "Doe"
+
+schemes:
+  - http
+
+host: cop4331.xhoantran.com
+basePath: /api
