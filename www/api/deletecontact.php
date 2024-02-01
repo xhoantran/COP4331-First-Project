@@ -26,11 +26,7 @@ try{
 }
 
 $data = json_decode(file_get_contents("php://input"));
-<<<<<<< HEAD
-$stmt = $pdo->prepare("INSERT INTO contacts (name , phone, email, user_id) VALUES(?,?,?,?)");
-=======
 $stmt = $pdo->prepare("DELETE FROM contacts WHERE id = ?");
->>>>>>> fa9499b66447b9ad316275dad5b9a2566bb6e460
 $stmt->execute([$data->id]);
 if ($stmt->rowCount() > 0) {
     http_response_code(201);
