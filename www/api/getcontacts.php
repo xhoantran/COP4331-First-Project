@@ -36,8 +36,8 @@ if(isset($_GET['search'])){
     $search = '%' . $_GET['search'] . '%';
 }
 
-$stmt = $pdo->prepare("SELECT * FROM contacts WHERE user_id = ? AND name LIKE ? ORDER BY last_updated DESC LIMIT 20 OFFSET $offset");
-if($stmt->execute([$_GET['user_id'], $search])){
+$stmt = $pdo->prepare("SELECT * FROM Contacts WHERE user_id = ? AND (name LIKE ? OR phone LIKE ? OR email LIKE ? ) ORDER BY last_updated DESC LIMIT 20 OFFSET $offset");
+if($stmt->execute([$_GET['user_id'], $search, $search, $search])){
     $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     http_response_code(200);
     echo json_encode($contacts);
